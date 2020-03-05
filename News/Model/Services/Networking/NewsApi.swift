@@ -29,7 +29,7 @@ struct Agent {
 
 struct NewsApi {
     fileprivate static let agent = Agent()
-    private static let apiKey = "de17c7aaab00408b9dbb33395ba98121"
+    private static let apiKey = "Insert Your Api Key Here"
     
     fileprivate static func buildUrl(endpoint: String, queryItems: [URLQueryItem]) -> URL? {
         var components = URLComponents()

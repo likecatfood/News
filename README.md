@@ -1,5 +1,6 @@
 # Info
 Simple news app made with Swift5, SwiftUI, MVVM and Combine
+![Screenshot](Screenshots/Screenshot.png)
 
 # Features
 - Display categorized news articles

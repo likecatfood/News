@@ -8,11 +8,10 @@
 
 import Foundation
 
-struct Article: Codable {
-    let title: String
-    let description: String?
-    let url: String
-    let urlToImage: String?
-    let content: String?
+struct Article: Codable, Equatable {
+    var title: String = ""
+    var description: String? = nil
+    var url: String = ""
+    var urlToImage: String? =  nil
+    var content: String? = nil
 }
-

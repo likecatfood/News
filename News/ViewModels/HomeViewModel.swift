@@ -10,7 +10,7 @@ import Foundation
 
 final class HomeViewModel: ObservableObject {
     
-    private let service: ArticleService = ArticleService()
+    private let service: ArticleServiceType
     
     @Published var isLoading: Bool = true
     
@@ -24,7 +24,8 @@ final class HomeViewModel: ObservableObject {
 
     var avaliableCategories: [CategoryViewModel] = Category.allCases.map { CategoryViewModel(with: $0) }
     
-    init() {
+    init(with service: ArticleServiceType) {
+        self.service = service
         category = CategoryViewModel(with: .top)
         load()
     }

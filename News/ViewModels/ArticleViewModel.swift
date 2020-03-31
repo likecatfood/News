@@ -27,6 +27,5 @@ final class ArticleViewModel: Identifiable {
             return URL(string: imgUrlString)
         }
         return nil
-
     }
 }

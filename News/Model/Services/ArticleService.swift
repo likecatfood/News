@@ -9,36 +9,59 @@
 import Foundation
 import Combine
 
-struct ArticleResponse: Codable  {
-    let articles: [Article]
+protocol ArticleServiceType {
+    func fetch(by category: Category, completion: @escaping (Result<[Article], Error>) -> Void)
+    func fetch(by searchText: String, completion: @escaping (Result<[Article], Error>) -> Void)
 }
 
-class ArticleService {
+final class ArticleService: ArticleServiceType {
     private var token: AnyCancellable? = nil
+    
+    private let networking: NetworkingType = NewsApi()
+    private var storage: PersistenceType = Persistence()
     
     func fetch(by category: Category, completion: @escaping (Result<[Article], Error>) -> Void) {
         token?.cancel()
         
+        let storedArticles = storage.fetch(by: category)
+        if storedArticles.count > 0 {
+            completion(.success(storedArticles))
+        }
+        
         let categoryId: String? = category != .top ? category.rawValue : nil
-        token = NewsApi.fetchArticles(category: categoryId)
+        token = networking.fetch(by: categoryId)
         .print()
         .sink(receiveCompletion: { completion in
-            print("Completion = \(completion)")
-        },
-              receiveValue: { response in
+            //print("Completion = \(completion)")
+        }, receiveValue: { [weak self] response in
+            if storedArticles != response.articles {
+                self?.storage.save(articles: response.articles, category: category)
                 completion(.success(response.articles))
+            }
         })
     }
     
     func fetch(by searchText: String, completion: @escaping (Result<[Article], Error>) -> Void) {
         token?.cancel()
-        token = NewsApi.fetchArticles(by: searchText)
+        
+        let storedArticles = storage.fetch(by: searchText)
+        if storedArticles.count > 0 {
+            completion(.success(storedArticles))
+        }
+        
+        token = networking.search(by: searchText)
         .print()
         .sink(receiveCompletion: { completion in
-            print("Completion = \(completion)")
-        },
-              receiveValue: { response in
+            //print("Completion = \(completion)")
+        }, receiveValue: { [weak self] response in
+            if storedArticles != response.articles  {
+                self?.storage.save(articles: response.articles, category: nil)
                 completion(.success(response.articles))
+            }
         })
     }
+}
+
+struct ArticleResponse: Codable  {
+    let articles: [Article]
 }

@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct HomeView: View {
-    @ObservedObject private var model = HomeViewModel()
+    @ObservedObject private var model = HomeViewModel(with: ArticleService())
     @State var showingDetail = false
         
     var body: some View {

@@ -15,10 +15,9 @@ protocol ArticleServiceType {
 }
 
 final class ArticleService: ArticleServiceType {
-    private var token: AnyCancellable? = nil
-    
     private let networking: NetworkingType = NewsApi()
-    private var storage: PersistenceType = Persistence()
+    private let storage: PersistenceType = Persistence()
+    private var token: AnyCancellable? = nil
     
     func fetch(by category: Category, completion: @escaping (Result<[Article], Error>) -> Void) {
         token?.cancel()

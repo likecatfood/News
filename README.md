@@ -7,6 +7,7 @@ Simple news app made with Swift5, SwiftUI, MVVM and Combine
 - Show article details
 - Ability to view full article and share it
 - Search news by keywords
+- Save articles locally using Realm
 
 # Setup
 1) Obtain your own api key from https://newsapi.org
